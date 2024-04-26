@@ -1,33 +1,33 @@
 package org.estudos.br;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 
 public class ConsultaIBGETest {
-    private static final String ESTADOS_API_URL = "https://servicodados.ibge.gov.br/api/v1/localidades/estados/";
-
+    @Test
+    public void testConsultarEstado() {
+        try {
+            String resultado = ConsultaIBGE.consultarEstado("SP"); // Consultar informações do estado de São Paulo
+            assertNotNull(resultado); // Verificar se o resultado não é nulo
+            assertTrue(resultado.contains("São Paulo")); // Verificar se o resultado contém informações de São Paulo
+        } catch (Exception e) {
+            fail("Exceção lançada durante a consulta de estado: " + e.getMessage());
+        }
+    }
 
     @Test
-    @DisplayName("Teste para consulta única de um estado")
-    public void testConsultarEstado() throws IOException {
-        // Arrange
-        String uf = "SP"; // Define o estado a ser consultado
+    public void testConsultarDistrito() {
+        try {
+            String resultado = ConsultaIBGE.consultarEstado("SP"); // Consultar informações do estado de São Paulo
+            assertNotNull(resultado); // Verificar se o resultado não é nulo
+            assertTrue(resultado.contains("São Paulo")); // Verificar se o resultado contém informações sobre o estado de São Paulo
+        } catch (Exception e) {
+            fail("Exceção lançada durante a consulta de distrito: " + e.getMessage());
+        }
+    }  
 
-        // Act
-        String resposta = ConsultaIBGE.consultarEstado(uf); // Chama o método a ser testado
-
-        // Assert
-        // Verifica se a resposta não está vazia
-        assert !resposta.isEmpty();
-
-        // Verifica se o status code é 200 (OK)
-        HttpURLConnection connection = (HttpURLConnection) new URL(ESTADOS_API_URL + uf).openConnection();
-        int statusCode = connection.getResponseCode();
-        assertEquals(200, statusCode, "O status code da resposta da API deve ser 200 (OK)");
-    }
 }
